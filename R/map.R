@@ -46,7 +46,7 @@ info_box <- function(items) {
 #' ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
 #' map(ctdf)
 
-map <- function(ctdf, path, prop = 1) {
+map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
 
   
   clusterTrack:::.check_ctdf(ctdf)
@@ -67,7 +67,10 @@ map <- function(ctdf, path, prop = 1) {
 
   nfo = c(N, cluster_par, pack)
 
-  CD = st_as_sf(ctdf) |> st_transform(4326)
+  CD = st_as_sf(ctdf) |> st_transform("OGC:CRS84")
+  
+  if(fix_dateline) CD = .fix_dateline(CD)
+  
   CD = mutate(CD,
     pt_lab = glue("time: {format(timestamp, '%d-%b-%y %H:%M')} <br/> seg: {`.segment`}<b/r>")
   ) |>
@@ -90,12 +93,16 @@ map <- function(ctdf, path, prop = 1) {
     N:{N}"
   )]
 
-  all_track = as_ctdf_track(ctdf) |> st_transform(crs = 4326) |> setDT()
+  all_track = as_ctdf_track(ctdf) |> st_transform(crs = "OGC:CRS84") |> setDT()
   all_track[, let(segement = factor(.segment) )]
   all_track = st_as_sf(all_track)
+  if(fix_dateline) all_track = .fix_dateline(all_track)
 
-  polys  = sites[, .(cluster, site_poly)] |>st_as_sf()
-  labels = sites[, .(cluster, lab, site_poly_center, stop)] |>st_as_sf()
+  polys = sites[, .(cluster, site_poly)] |> st_as_sf()
+  if(fix_dateline) polys = .fix_dateline(polys)
+  
+  labels = sites[, .(cluster, lab, site_poly_center, stop)] |> st_as_sf()
+  if(fix_dateline) labels = .fix_dateline(labels)
 
   # map elements
     pal = colorFactor(viridis::viridis(unique(sites$cluster) |> length()), sites$cluster)

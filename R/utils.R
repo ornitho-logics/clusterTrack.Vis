@@ -1,4 +1,11 @@
 
+.fix_dateline = function(x) {
+  x |>
+  st_wrap_dateline(options = c("WRAPDATELINE=YES", "DATELINEOFFSET=180"), quiet = TRUE) |>
+  st_shift_longitude()
+}
+
+
 .sitepoly <- function(x, method = "mcp", p = 0.9) {
 
   clusterTrack:::.mcp(x, p)

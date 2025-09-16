@@ -4,7 +4,7 @@
 \alias{map}
 \title{Map a ctdf object}
 \usage{
-map(ctdf, path, prop = 1)
+map(ctdf, path, prop = 1, fix_dateline = FALSE)
 }
 \arguments{
 \item{ctdf}{A \code{ctdf} object.}
