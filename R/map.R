@@ -107,7 +107,6 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
   # map elements
     pal = colorFactor(viridis::viridis(unique(sites$cluster) |> length()), sites$cluster)
 
-
     clust_ico = awesomeIcons(
       icon       = NULL,
       text       = as.character(sites$cluster),
@@ -195,6 +194,20 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
                       "Esri World Imagery"),
       options       = layersControlOptions(collapsed = TRUE)
     )
+
+    if("true_cluster" %in% names(CD))
+      mm = 
+      mm |>
+      addCircleMarkers(
+        data        = dplyr::filter(CD, true_cluster>0),
+        radius      = 6,
+        color       = ~ "#e75d01",
+        fillOpacity = 0,
+        weight      = 1.5,
+        label       =  ~paste("true clust:", true_cluster)
+      )
+
+
 
   if(!missing(path)) {
     saveWidget(mm, path,title = basename(path) |> str_remove('.html'),  selfcontained = FALSE, libdir = "maplibs")

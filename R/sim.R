@@ -17,6 +17,7 @@
 #' @param y_range Numeric length-2. Range to rescale y values of the trajectory.
 #' @param sd_range Numeric length-2. Range of standard deviations used to build
 #'   cluster covariance matrices.
+#' @param seed Integer seed for reproducible randomness.
 #'
 #' @return A `ctdf` containing both the trajectory and generated cluster points. 
 #' A `true_cluster` column marking the ID of each cluster observation.
@@ -27,7 +28,9 @@
 #' diagonal covariance matrix whose standard deviation is drawn from
 #' `sd_range`. Timestamps for cluster points are uniformly sampled between the
 #' center's previous and next trajectory timestamps, avoiding exact boundaries.
-#'
+#' 
+#' @export
+#' 
 #' @examples
 #' tr = generate_clustered_traj(
 #'   traj_n = 200,
@@ -35,6 +38,8 @@
 #'   n_per_cluster = 20
 #' )
 #' tr
+#' cluster_track(tr, threshold = 0.5)
+#' map(tr)
 
 
 
@@ -46,8 +51,11 @@
     n_per_cluster      = 10,
     x_range            = c(14, 34),
     y_range            = c(17, -17),
-    sd_range           = c(0.2, 0.8)
+    sd_range           = c(0.2, 0.8),
+    seed               = NULL
     ) {
+
+      if (!is.null(seed)) set.seed(seed)
 
       tr = trajr::TrajGenerate(
         n          = traj_n,
@@ -64,7 +72,7 @@
       tr[, time_next := shift(time, type = "lead")]
       tr[, base_id := .I]
 
-      clusters = tr[sample(.N, n_clusters)] |> na.omit()
+      clusters = tr[sample(.N, n_clusters)] 
       clusters[, sd := runif(.N, sd_range[1], sd_range[2])]
 
       cluster_points = clusters[
@@ -104,6 +112,8 @@
         cluster_points,
         fill = TRUE
       )
+
+      out[is.na(true_cluster), true_cluster := 0]
 
       setorder(out, time)
       
