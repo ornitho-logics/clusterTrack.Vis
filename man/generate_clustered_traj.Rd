@@ -12,7 +12,8 @@ generate_clustered_traj(
   n_per_cluster = 10,
   x_range = c(14, 34),
   y_range = c(17, -17),
-  sd_range = c(0.2, 0.8)
+  sd_range = c(0.2, 0.8),
+  seed = NULL
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ generate_clustered_traj(
 
 \item{sd_range}{Numeric length-2. Range of standard deviations used to build
 cluster covariance matrices.}
+
+\item{seed}{Integer seed for reproducible randomness.}
 }
 \value{
 A \code{ctdf} containing both the trajectory and generated cluster points.
@@ -58,4 +61,6 @@ tr = generate_clustered_traj(
   n_per_cluster = 20
 )
 tr
+cluster_track(tr, threshold = 0.5)
+map(tr)
 }
