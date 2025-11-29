@@ -1,7 +1,5 @@
-
-
-#' @import data.table 
-#' @import sf leaflet ggplot2 
+#' @import data.table
+#' @import sf leaflet ggplot2
 #' @importFrom leaflet.extras2 addTimeslider timesliderOptions
 #' @importFrom leaflet.extras addBootstrapDependency
 #' @importFrom htmlwidgets appendContent saveWidget

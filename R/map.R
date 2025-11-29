@@ -90,10 +90,10 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
   sites[,
     lab := glue_data(
       .SD,
-      "tenure:{Tenure}                       <br/>
+      "tenure:{Tenure}                    <br/>
     start:{format(start, '%d-%b-%y %Hh')} <br/>
     stop:{format(stop, '%d-%b-%y %Hh')}   <br/>
-    segments:{putative_clusters}           <br/>
+    segments:{putative_clusters}          <br/>
     N:{N}"
     )
   ]
