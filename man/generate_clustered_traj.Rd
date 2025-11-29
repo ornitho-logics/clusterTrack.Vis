@@ -6,22 +6,17 @@
 \usage{
 generate_clustered_traj(
   traj_n = 100,
-  traj_random = FALSE,
-  traj_step_length = 2,
   n_clusters = 10,
   n_per_cluster = 10,
   x_range = c(14, 34),
   y_range = c(17, -17),
   sd_range = c(0.2, 0.8),
-  seed = NULL
+  seed = NULL,
+  ...
 )
 }
 \arguments{
 \item{traj_n}{Integer. Number of base trajectory steps.}
-
-\item{traj_random}{Logical. Whether the base trajectory is random.}
-
-\item{traj_step_length}{Numeric. Step length for the generated trajectory.}
 
 \item{n_clusters}{Integer. Number of cluster centers.}
 
@@ -35,6 +30,12 @@ generate_clustered_traj(
 cluster covariance matrices.}
 
 \item{seed}{Integer seed for reproducible randomness.}
+
+\item{...}{passed to trajr::TrajGenerate}
+
+\item{traj_random}{Logical. Whether the base trajectory is random.}
+
+\item{traj_step_length}{Numeric. Step length for the generated trajectory.}
 }
 \value{
 A \code{ctdf} containing both the trajectory and generated cluster points.

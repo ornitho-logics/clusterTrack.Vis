@@ -16,6 +16,7 @@
 #' @param y_range Numeric length-2. Range to rescale y values of the trajectory.
 #' @param sd_range Numeric length-2. Range of standard deviations used to build
 #'   cluster covariance matrices.
+#' @param ... passed to trajr::TrajGenerate
 #' @param seed Integer seed for reproducible randomness.
 #'
 #' @return A `ctdf` containing both the trajectory and generated cluster points.
@@ -42,14 +43,13 @@
 
 generate_clustered_traj <- function(
   traj_n = 100,
-  traj_random = FALSE,
-  traj_step_length = 2,
   n_clusters = 10,
   n_per_cluster = 10,
   x_range = c(14, 34),
   y_range = c(17, -17),
   sd_range = c(0.2, 0.8),
-  seed = NULL
+  seed = NULL,
+  ...
 ) {
   if (!is.null(seed)) {
     set.seed(seed)
@@ -57,8 +57,7 @@ generate_clustered_traj <- function(
 
   tr = trajr::TrajGenerate(
     n = traj_n,
-    random = traj_random,
-    stepLength = traj_step_length
+    ...
   ) |>
     setDT()
 
