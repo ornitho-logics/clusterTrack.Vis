@@ -44,6 +44,7 @@ info_box <- function(items) {
 #' map(ctdf)
 
 map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
+  #TODO: make it work on no cluster ctdf!
   clusterTrack:::.check_ctdf(ctdf)
 
   if (nrow(ctdf[!is.na(cluster)]) == 0) {
