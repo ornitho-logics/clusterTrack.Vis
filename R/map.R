@@ -76,7 +76,12 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
   CD = mutate(
     CD,
     pt_lab = glue(
-      "time: {format(timestamp, '%d-%b-%y %H:%M')} <br/> seg: {`.putative_cluster`}<b/r>"
+      "
+        .id: {`.id`}  <br>
+        .move_seg: {`.move_seg`}  <br>
+        time:    {format(timestamp, '%d-%b-%y %H:%M')} <br>
+        p.clus: {`.putative_cluster`}  <br>
+      "
     )
   ) |>
     rowwise() |>
@@ -94,7 +99,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       "tenure:{Tenure}                    <br/>
     start:{format(start, '%d-%b-%y %Hh')} <br/>
     stop:{format(stop, '%d-%b-%y %Hh')}   <br/>
-    segments:{putative_clusters}          <br/>
+    p. cluster:{putative_clusters}        <br/>
     N:{N}"
     )
   ]
@@ -185,9 +190,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
         closeOnClick = FALSE
       )
     ) |>
-    addBootstrapDependency(
-      #
-    ) |>
+    addBootstrapDependency() |>
     addEasyButton(easyButton(
       icon = '<i class="fa fa-dot-circle-o" style="color:red; font-weight:bold;"></i>',
       title = "clusterTrack",
