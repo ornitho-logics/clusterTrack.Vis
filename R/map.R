@@ -99,7 +99,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       "tenure:{Tenure}                    <br/>
     start:{format(start, '%d-%b-%y %Hh')} <br/>
     stop:{format(stop, '%d-%b-%y %Hh')}   <br/>
-    p. cluster:{putative_clusters}        <br/>
+    ids:{ids}        <br/>
     N:{N}"
     )
   ]
@@ -116,9 +116,11 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
     polys = .fix_dateline(polys)
   }
 
-  labels = sites[, .(cluster, lab, site_poly_center, stop)] |> st_as_sf()
+  sites_sf = sites[, .(cluster, lab, site_poly_center, stop)] |>
+    st_as_sf()
+
   if (fix_dateline) {
-    labels = .fix_dateline(labels)
+    sites_sf = .fix_dateline(sites_sf)
   }
 
   # map elements
@@ -145,6 +147,13 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       "Esri.WorldGrayCanvas",
       group = "Esri World Gray Canvas"
     ) |>
+    addPolygons(
+      data = polys,
+      fillColor = ~ pal(cluster),
+      fillOpacity = 0.5,
+      weight = 0,
+      group = "Clusters"
+    ) |>
     addPolylines(
       data = all_track,
       color = "#7e7f81cc",
@@ -162,13 +171,6 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       fillOpacity = 1,
       group = "Site Track"
     ) |>
-    addPolygons(
-      data = polys,
-      fillColor = ~ pal(cluster),
-      fillOpacity = 0.5,
-      weight = 0,
-      group = "Clusters"
-    ) |>
     addCircleMarkers(
       data = site_points,
       label = ~pt_lab,
@@ -179,7 +181,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       group = "Site Track"
     ) |>
     addAwesomeMarkers(
-      data = labels,
+      data = sites_sf,
       icon = clust_ico,
       popup = ~lab,
       group = "Cluster Icons",
@@ -197,7 +199,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       onClick = JS("function(btn, map){ $('#infobox').modal('show'); }")
     )) |>
     addTimeslider(
-      data = labels,
+      data = sites_sf,
       options = timesliderOptions(
         timeAttribute = "stop",
         range = FALSE,
