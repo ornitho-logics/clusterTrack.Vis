@@ -160,6 +160,9 @@ library(plotly)
 #' @param ctdf A `ctdf` object.
 #' @param binwidth Bin width in seconds (POSIXct is binned in seconds). Defaults to 3 hours.
 #' @param static Logical. If `TRUE`, return a static `ggplot`; otherwise return an interactive `plotly` object.
+#' @method hist ctdf
+#' @importFrom graphics hist
+#'
 #'
 #' @return A `ggplot` (if `static = TRUE`) or a `plotly` htmlwidget (if `static = FALSE`).
 #'
@@ -168,9 +171,9 @@ library(plotly)
 #' require(clusterTrack.Vis)
 #' data(pesa56511)
 #' ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
-#' hist_ctdf(ctdf)
+#' hist(ctdf)
 
-hist_ctdf <- function(ctdf, binwidth = 3 * 3600, static = FALSE) {
+hist.ctdf <- function(ctdf, binwidth = 3 * 3600, static = FALSE, ...) {
   clusterTrack:::.check_ctdf(ctdf)
 
   if (static) {
