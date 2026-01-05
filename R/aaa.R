@@ -15,4 +15,20 @@
 #' @importFrom lubridate seconds
 #' @importFrom MASS mvrnorm
 #' @importFrom forcats fct_inorder
+#'
+#'
+# Plots
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 facet_wrap
+#' @importFrom ggplot2 geom_histogram
+#' @importFrom ggplot2 geom_vline
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 labs
+#' @importFrom ggplot2 theme
+#' @importFrom ggplot2 theme_minimal
+#' @importFrom plotly add_trace
+#' @importFrom plotly layout
+#' @importFrom plotly plot_ly
+#' @importFrom plotly subplot
+
 NULL
