@@ -8,8 +8,9 @@
 }
 
 
-.sitepoly <- function(x, method = "mcp", p = 0.9) {
-  clusterTrack:::.mcp(x, p)
+.sitepoly <- function(x) {
+  # clusterTrack:::.mcp(x, p)
+  st_union(x) |> st_concave_hull(ratio = 0.9)
 }
 
 #' Extended summary of a ctdf
@@ -24,7 +25,7 @@
 #'
 #' summarise_ctdf(ctdf)
 
-summarise_ctdf <- function(ctdf, site_poly = "mcp", prop = 0.9) {
+summarise_ctdf <- function(ctdf) {
   x = summary(ctdf) |>
     st_as_sf() |>
     st_transform(crs = 4326) |>
@@ -33,7 +34,7 @@ summarise_ctdf <- function(ctdf, site_poly = "mcp", prop = 0.9) {
   polys = ctdf[
     cluster > 0,
     .(
-      site_poly = .sitepoly(location, method = site_poly, p = prop) |>
+      site_poly = .sitepoly(location) |>
         st_transform(crs = 4326)
     ),
     by = cluster

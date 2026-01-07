@@ -4,7 +4,7 @@
 \alias{summarise_ctdf}
 \title{Extended summary of a ctdf}
 \usage{
-summarise_ctdf(ctdf, site_poly = "mcp", prop = 0.9)
+summarise_ctdf(ctdf)
 }
 \arguments{
 \item{ctdf}{A \code{ctdf} object.}

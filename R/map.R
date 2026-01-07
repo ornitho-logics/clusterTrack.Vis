@@ -90,7 +90,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
   move_points = dplyr::filter(CD, cluster == 0)
   site_points = dplyr::filter(CD, cluster != 0)
 
-  sites = summarise_ctdf(ctdf, prop = prop)
+  sites = summarise_ctdf(ctdf)
   sites[tenure < 1, Tenure := glue_data(.SD, "{round(tenure*24)}[h]")]
   sites[tenure > 1, Tenure := glue_data(.SD, "{round(tenure,1)}[d]")]
   sites[,
