@@ -8,8 +8,15 @@
 }
 
 
+.mcp <- function(x, p = 0.95) {
+  d = st_distance(x, st_union(x) |> st_centroid())
+  st_union(x[d <= quantile(d, p), ]) |>
+    st_convex_hull()
+}
+
+
 .sitepoly <- function(x) {
-  # clusterTrack:::.mcp(x, p)
+  #  .mcp(x, p)
   st_union(x) |> st_concave_hull(ratio = 0.9)
 }
 
