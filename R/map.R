@@ -147,6 +147,12 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       "Esri.WorldGrayCanvas",
       group = "Esri World Gray Canvas"
     ) |>
+    addMeasure(
+      position = "topleft",
+      primaryLengthUnit = "kilometers",
+      secondaryLengthUnit = "meters",
+      primaryAreaUnit = "sqmeters"
+    ) |>
     addPolygons(
       data = polys,
       fillColor = ~ pal(cluster),
