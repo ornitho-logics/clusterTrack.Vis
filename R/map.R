@@ -147,6 +147,16 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       "Esri.WorldGrayCanvas",
       group = "Esri World Gray Canvas"
     ) |>
+    addLayersControl(
+      baseGroups = c(
+        "Esri World Gray Canvas",
+        "Open Topo Map",
+        "OSM Default",
+        "Esri World Imagery"
+      ),
+      position = "topleft",
+      options = layersControlOptions(collapsed = TRUE)
+    ) |>
     addFullscreenControl(
       position = "topleft",
       pseudoFullscreen = FALSE
@@ -157,6 +167,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       secondaryLengthUnit = "meters",
       primaryAreaUnit = "sqmeters"
     ) |>
+    addScaleBar(position = "bottomleft") |>
     addPolygons(
       data = polys,
       fillColor = ~ pal(cluster),
@@ -218,15 +229,6 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
     ) |>
     appendContent(
       info_box(nfo)
-    ) |>
-    addLayersControl(
-      baseGroups = c(
-        "Esri World Gray Canvas",
-        "Open Topo Map",
-        "OSM Default",
-        "Esri World Imagery"
-      ),
-      options = layersControlOptions(collapsed = TRUE)
     )
 
   if ("true_cluster" %in% names(CD)) {
