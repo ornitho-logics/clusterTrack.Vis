@@ -147,6 +147,10 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       "Esri.WorldGrayCanvas",
       group = "Esri World Gray Canvas"
     ) |>
+    addFullscreenControl(
+      position = "topleft",
+      pseudoFullscreen = FALSE
+    ) |>
     addMeasure(
       position = "topleft",
       primaryLengthUnit = "kilometers",
