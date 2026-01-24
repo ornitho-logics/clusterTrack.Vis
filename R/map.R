@@ -1,4 +1,37 @@
-info_box <- function(items) {
+.map_empty <- function() {
+  leaflet() |>
+    addTiles(group = "OSM Default") |>
+    addProviderTiles("OpenTopoMap", group = "Open Topo Map") |>
+    addProviderTiles("Esri.WorldImagery", group = "Esri World Imagery") |>
+    addProviderTiles(
+      "Esri.WorldGrayCanvas",
+      group = "Esri World Gray Canvas"
+    ) |>
+    addLayersControl(
+      baseGroups = c(
+        "Esri World Gray Canvas",
+        "Open Topo Map",
+        "OSM Default",
+        "Esri World Imagery"
+      ),
+      position = "topleft",
+      options = layersControlOptions(collapsed = TRUE)
+    ) |>
+    addFullscreenControl(
+      position = "topleft",
+      pseudoFullscreen = FALSE
+    ) |>
+    addMeasure(
+      position = "topleft",
+      primaryLengthUnit = "kilometers",
+      secondaryLengthUnit = "meters",
+      primaryAreaUnit = "sqmeters"
+    ) |>
+    addScaleBar(position = "bottomleft")
+}
+
+
+.info_box <- function(items) {
   html_list =
     sapply(items, function(item) glue::glue("<li>{item}</li>")) |>
     glue_collapse()
@@ -26,35 +59,46 @@ info_box <- function(items) {
 #' @param ctdf A `ctdf` object produced by `cluster_track()`.
 #' @param path Optional `character`. File path where the HTML map will be saved.
 #'             If omitted, the function returns the `leaflet` map object.
-#' @param prop Numeric (0 < prop ≤ 1). Fraction of each cluster’s points
-#'            used to construct the site polygons on the map.
-#'            lower values produce tighter, core‐area convex‐hull polygons;
-#'            prop = 1 (default) includes all points in the hull.
 #' @return A `leaflet` map object if `path` is not provided.
-#'        If `path` is provided, an HTML file (and its `maplibs/` directory) is written to disk.
+#'        If `path` is provided, an HTML file (and its `assets/` directory) is written to disk.
 #' @seealso [clusterTrack::cluster_track()], [htmlwidgets::saveWidget()]
 #
 #'
 #' @param ctdf A `ctdf` object.
 #' @export
 #' @examples
-#' require(clusterTrack.Vis)
-#' data(pesa56511)
-#' ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
+#' data(mini_ruff)
+#' ctdf = as_ctdf(mini_ruff)
+#' map(ctdf) # empty map
+#' cluster_track(ctdf)
 #' map(ctdf)
+#' map(ctdf, path = "~/Desktop/temp")
 
-map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
-  #TODO: make it work on no cluster ctdf!
+map <- function(ctdf, path, fix_dateline = FALSE) {
   clusterTrack:::.check_ctdf(ctdf)
 
+  all_track = as_ctdf_track(ctdf) |> st_transform(crs = "OGC:CRS84") |> setDT()
+  all_track[, let(segement = factor(.putative_cluster))]
+  all_track = st_as_sf(all_track)
+  if (fix_dateline) {
+    all_track = .fix_dateline(all_track)
+  }
+
   if (nrow(ctdf[!is.na(cluster)]) == 0) {
-    stop("this ctdf does not have any clusters!")
+    warning("this ctdf does not have any clusters!")
+
+    mm = .map_empty() |>
+      addPolylines(
+        data = all_track,
+        color = "#d32013cc",
+        weight = 2
+      )
+    return(mm)
   }
 
   N = glue(
     "<b>N</b>:<br>
             - fixes:{nrow(ctdf)} <br>
-            - segments: {max(ctdf$.putative_cluster, na.rm = TRUE)} <br>
             - clusters: {max(ctdf$cluster)}"
   )
 
@@ -104,13 +148,6 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
     )
   ]
 
-  all_track = as_ctdf_track(ctdf) |> st_transform(crs = "OGC:CRS84") |> setDT()
-  all_track[, let(segement = factor(.putative_cluster))]
-  all_track = st_as_sf(all_track)
-  if (fix_dateline) {
-    all_track = .fix_dateline(all_track)
-  }
-
   polys = sites[, .(cluster, site_poly)] |> st_as_sf()
   if (fix_dateline) {
     polys = .fix_dateline(polys)
@@ -139,35 +176,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
 
   # build map
   mm =
-    leaflet() |>
-    addTiles(group = "OSM Default") |>
-    addProviderTiles("OpenTopoMap", group = "Open Topo Map") |>
-    addProviderTiles("Esri.WorldImagery", group = "Esri World Imagery") |>
-    addProviderTiles(
-      "Esri.WorldGrayCanvas",
-      group = "Esri World Gray Canvas"
-    ) |>
-    addLayersControl(
-      baseGroups = c(
-        "Esri World Gray Canvas",
-        "Open Topo Map",
-        "OSM Default",
-        "Esri World Imagery"
-      ),
-      position = "topleft",
-      options = layersControlOptions(collapsed = TRUE)
-    ) |>
-    addFullscreenControl(
-      position = "topleft",
-      pseudoFullscreen = FALSE
-    ) |>
-    addMeasure(
-      position = "topleft",
-      primaryLengthUnit = "kilometers",
-      secondaryLengthUnit = "meters",
-      primaryAreaUnit = "sqmeters"
-    ) |>
-    addScaleBar(position = "bottomleft") |>
+    .map_empty() |>
     addPolygons(
       data = polys,
       fillColor = ~ pal(cluster),
@@ -228,7 +237,7 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
       )
     ) |>
     appendContent(
-      info_box(nfo)
+      .info_box(nfo)
     )
 
   if ("true_cluster" %in% names(CD)) {
@@ -245,13 +254,22 @@ map <- function(ctdf, path, prop = 1, fix_dateline = FALSE) {
   }
 
   if (!missing(path)) {
+    map_nam = as.character(substitute(ctdf))
+    this_path = paste0(path, "/", map_nam, ".html")
+
+    if (!dir.exists(path)) {
+      dir.create(path, recursive = TRUE)
+    }
+
     saveWidget(
       mm,
-      path,
-      title = basename(path) |> str_remove('.html'),
+      file = this_path,
+      title = map_nam,
       selfcontained = FALSE,
-      libdir = "maplibs"
+      libdir = "assets"
     )
+
+    message(map_nam)
   } else {
     return(mm)
   }

@@ -4,18 +4,13 @@
 \alias{map}
 \title{Map a ctdf object}
 \usage{
-map(ctdf, path, prop = 1, fix_dateline = FALSE)
+map(ctdf, path, fix_dateline = FALSE)
 }
 \arguments{
 \item{ctdf}{A \code{ctdf} object.}
 
 \item{path}{Optional \code{character}. File path where the HTML map will be saved.
 If omitted, the function returns the \code{leaflet} map object.}
-
-\item{prop}{Numeric (0 < prop ≤ 1). Fraction of each cluster’s points
-used to construct the site polygons on the map.
-lower values produce tighter, core‐area convex‐hull polygons;
-prop = 1 (default) includes all points in the hull.}
 }
 \value{
 A \code{leaflet} map object if \code{path} is not provided.
@@ -25,9 +20,8 @@ If \code{path} is provided, an HTML file (and its \verb{maplibs/} directory) is 
 Visualize clustered track data on an interactive map.
 }
 \examples{
-require(clusterTrack.Vis)
-data(pesa56511)
-ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
+data(mini_ruff)
+ctdf = as_ctdf(mini_ruff, time = "locationDate") |> cluster_track()
 map(ctdf)
 }
 \seealso{
