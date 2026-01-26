@@ -14,15 +14,18 @@ If omitted, the function returns the \code{leaflet} map object.}
 }
 \value{
 A \code{leaflet} map object if \code{path} is not provided.
-If \code{path} is provided, an HTML file (and its \verb{maplibs/} directory) is written to disk.
+If \code{path} is provided, an HTML file (and its \verb{assets/} directory) is written to disk.
 }
 \description{
 Visualize clustered track data on an interactive map.
 }
 \examples{
 data(mini_ruff)
-ctdf = as_ctdf(mini_ruff, time = "locationDate") |> cluster_track()
+ctdf = as_ctdf(mini_ruff)
+map(ctdf) # empty map
+cluster_track(ctdf)
 map(ctdf)
+map(ctdf, path = "~/Desktop/temp")
 }
 \seealso{
 \code{\link[clusterTrack:cluster_track]{clusterTrack::cluster_track()}}, \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}

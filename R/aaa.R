@@ -1,4 +1,4 @@
-#' @import data.table
+#' @import data.table stringr
 #' @import sf leaflet ggplot2
 #'
 #' @importFrom leaflet.extras2 addTimeslider timesliderOptions
@@ -15,6 +15,7 @@
 #' @importFrom lubridate seconds
 #' @importFrom MASS mvrnorm
 #' @importFrom forcats fct_inorder
+#' @importFrom webshot2 webshot
 #'
 #'
 NULL

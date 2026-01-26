@@ -1,36 +1,39 @@
-.make_index <- function(path) {
+.screenshot_html <- function(
+  html_path,
+  vwidth = 900,
+  vheight = 900,
+  delay = 2
+) {
+  png_path = str_replace(html_path, ".html", ".webp")
+
+  webshot2::webshot(
+    url = html_path,
+    file = png_path,
+    vwidth = vwidth,
+    vheight = vheight,
+    delay = delay
+  )
+
+  png_path
+}
+
+#' @export
+prepare_thumbs <- function(path) {
   hh = list.files(
     path,
     pattern = "\\.html$",
-    full.names = FALSE
-  ) |>
-    setdiff("index.html")
+    full.names = TRUE
+  )
+  hh = hh[basename(hh) != "index.html"]
 
   X = data.table(
     file = hh,
     title = str_remove(basename(hh), "\\.html$")
   )
 
-  page =
-    htmltools::tags$html(
-      htmltools::tags$head(
-        htmltools::tags$title("clusterTrack output")
-      ),
-      htmltools::tags$body(
-        htmltools::tags$h1("clusterTrack output"),
+  X[, thumb := .screenshot_html(file), by = file]
 
-        htmltools::tags$ul(
-          lapply(seq_len(nrow(X)), function(i) {
-            htmltools::tags$li(htmltools::tags$a(
-              href = X$file[i],
-              X$title[i]
-            ))
-          })
-        )
-      )
-    )
-
-  htmltools::save_html(page, file = paste0(path, "/index.html"))
+  X
 }
 
 
@@ -43,7 +46,7 @@
 #' @return Invisibly, a list with paths (`index`, `assets_dir`, `libs_dir`,
 #'   `metadata_dir`) and a `data.table` summary of discovered maps.
 #' @export
-
+#' @examples
 #' \dontrun{
 #' siteloc = "~/Desktop/temp"
 #' data(mini_ruff)

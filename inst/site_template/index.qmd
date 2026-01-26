@@ -1,0 +1,46 @@
+---
+title: "Leaflet gallery"
+format:
+  html:
+    toc: false
+    page-layout: full
+    embed-resources: true
+params:
+  path: "~/Desktop/temp"
+  ncol: 3
+---
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+#| warning: false
+library(data.table)
+library(clusterTrack.Vis)
+
+path <- params$path
+ncol <- params$ncol
+
+X <- prepare_thumbs(path)
+
+X[, href := basename(file)]
+
+col <- sprintf("col-12 col-sm-6 col-md-%d", as.integer(12 / ncol))
+
+tiles <- glue::glue(
+  '<div class="{col}">
+    <a class="text-decoration-none" href="{X$href}">
+      <div class="card shadow-sm h-100">
+        <img class="card-img-top" src="{X$thumb}" alt="{X$title}" loading="lazy">
+        <div class="card-body"><div class="card-title fw-semibold">{X$title}</div></div>
+      </div>
+    </a>
+  </div>'
+)
+
+
+```
+
+<div class="row g-4">
+`r tiles`
+</div>
