@@ -2,20 +2,17 @@
 % Please edit documentation in R/site.R
 \name{site}
 \alias{site}
-\title{Build a simple static site index for a folder of leaflet/htmlwidgets maps}
+\title{Create a Quarto index template for browsing saved maps}
 \usage{
 site(path)
 }
 \arguments{
-\item{path}{Directory containing saved map \code{.html} files.}
-}
-\value{
-Invisibly, a list with paths (\code{index}, \code{assets_dir}, \code{libs_dir},
-\code{metadata_dir}) and a \code{data.table} summary of discovered maps.
+\item{path}{Directory where the template \code{index.qmd} should be copied.}
 }
 \description{
-Creates an \code{index.html} with links and inline previews for all \code{.html} maps
-under \code{path}
+Copies a Quarto \code{index.qmd} template into \code{path}. Render the copied file
+(for example with Quarto) to generate an \code{index.html} that can be used to
+navigate to the saved map \code{.html} files in the folder.
 }
 \examples{
 \dontrun{
