@@ -4,13 +4,15 @@
 \alias{map}
 \title{Map a ctdf object}
 \usage{
-map(ctdf, path, fix_dateline = FALSE)
+map(ctdf, path, name, fix_dateline = FALSE)
 }
 \arguments{
 \item{ctdf}{A \code{ctdf} object.}
 
 \item{path}{Optional \code{character}. File path where the HTML map will be saved.
 If omitted, the function returns the \code{leaflet} map object.}
+
+\item{name}{When path is given, the name of the html file.}
 }
 \value{
 A \code{leaflet} map object if \code{path} is not provided.

@@ -19,7 +19,7 @@ navigate to the saved map \code{.html} files in the folder.
 siteloc = "~/Desktop/temp"
 data(mini_ruff)
 mini_ruff = as_ctdf(mini_ruff) |> cluster_track()
-map(mini_ruff, path = siteloc)
+map(mini_ruff, path = siteloc, name = "(ruff_143789_subset")
 
 data(pesa56511)
 pesa = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()

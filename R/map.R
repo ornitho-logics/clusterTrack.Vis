@@ -59,6 +59,7 @@
 #' @param ctdf A `ctdf` object produced by `cluster_track()`.
 #' @param path Optional `character`. File path where the HTML map will be saved.
 #'             If omitted, the function returns the `leaflet` map object.
+#' @param name When path is given, the name of the html file.
 #' @return A `leaflet` map object if `path` is not provided.
 #'        If `path` is provided, an HTML file (and its `assets/` directory) is written to disk.
 #' @seealso [clusterTrack::cluster_track()], [htmlwidgets::saveWidget()]
@@ -74,7 +75,7 @@
 #' map(ctdf)
 #' map(ctdf, path = "~/Desktop/temp")
 
-map <- function(ctdf, path, fix_dateline = FALSE) {
+map <- function(ctdf, path, name, fix_dateline = FALSE) {
   clusterTrack:::.check_ctdf(ctdf)
 
   all_track = as_ctdf_track(ctdf) |> st_transform(crs = "OGC:CRS84") |> setDT()
@@ -254,8 +255,10 @@ map <- function(ctdf, path, fix_dateline = FALSE) {
   }
 
   if (!missing(path)) {
-    map_nam = as.character(substitute(ctdf))
-    this_path = paste0(path, "/", map_nam, ".html")
+    if (missing(name)) {
+      name = as.character(substitute(ctdf))
+    }
+    this_path = paste0(path, "/", name, ".html")
 
     if (!dir.exists(path)) {
       dir.create(path, recursive = TRUE)
@@ -264,12 +267,12 @@ map <- function(ctdf, path, fix_dateline = FALSE) {
     saveWidget(
       mm,
       file = this_path,
-      title = map_nam,
+      title = name,
       selfcontained = FALSE,
       libdir = "assets"
     )
 
-    message(map_nam)
+    message(name)
   } else {
     return(mm)
   }
