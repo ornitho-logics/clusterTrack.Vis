@@ -156,7 +156,7 @@ site <- function(path) {
     "  1) Open and edit index.qmd (optional).\n",
     "  2) Render it to create index.html, e.g.:\n",
     "     quarto render ",
-    shQuote(file.path(path, "index.qmd")),
+    file.path(path, "index.qmd"),
     "\n",
     "  3) Open ",
     shQuote(file.path(path, "index.html")),
