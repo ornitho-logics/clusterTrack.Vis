@@ -70,7 +70,7 @@ hist.ctdf <- function(ctdf, binwidth = 3600) {
   x = copy(ctdf)
   if (x[, is.na(cluster) |> all()]) {
     x[, cluster := .putative_cluster]
-    warning("Plotting `.putative_cluster`-s")
+    warning("No final cluster found, plotting `.putative_cluster`-s")
   }
 
   if (x[, is.na(cluster) |> all()]) {
