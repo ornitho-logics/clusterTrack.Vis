@@ -1,21 +1,34 @@
-.map_empty <- function() {
-  leaflet() |>
-    addTiles(group = "OSM Default") |>
-    addProviderTiles("OpenTopoMap", group = "Open Topo Map") |>
-    addProviderTiles("Esri.WorldImagery", group = "Esri World Imagery") |>
+.map_empty = function() {
+  leaflet(
+    options = leafletOptions(
+      zoomSnap = 0.25
+    )
+  ) |>
+
     addProviderTiles(
-      "Esri.WorldGrayCanvas",
-      group = "Esri World Gray Canvas"
+      "CartoDB.Positron",
+      group = "Light",
+      options = providerTileOptions(
+        maxNativeZoom = 18,
+        maxZoom = 21
+      )
+    ) |>
+    addProviderTiles(
+      "Esri.WorldImagery",
+      group = "Satellite"
+    ) |>
+    addProviderTiles(
+      "OpenTopoMap",
+      group = "Topo"
     ) |>
     addLayersControl(
       baseGroups = c(
-        "Esri World Gray Canvas",
-        "Open Topo Map",
-        "OSM Default",
-        "Esri World Imagery"
+        "Light",
+        "Satellite",
+        "Topo"
       ),
-      position = "topleft",
-      options = layersControlOptions(collapsed = TRUE)
+      options = layersControlOptions(collapsed = TRUE),
+      position = "topleft"
     ) |>
     addFullscreenControl(
       position = "topleft",
@@ -29,7 +42,6 @@
     ) |>
     addScaleBar(position = "bottomleft")
 }
-
 
 .info_box <- function(items) {
   html_list =
