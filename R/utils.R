@@ -51,7 +51,7 @@ summarise_ctdf <- function(ctdf) {
   ]
 
   polys[,
-    site_poly := st_transform(site_poly, crs = 4326)
+    site_poly := st_transform(site_poly, crs = 4326) |> st_as_sf()
   ]
 
   o = merge(x, polys, by = "cluster")
