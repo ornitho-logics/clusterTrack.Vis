@@ -41,13 +41,18 @@ summarise_ctdf <- function(ctdf) {
   polys = ctdf[
     cluster > 0,
     .(
-      site_poly = .sitepoly(location) |>
-        st_transform(crs = 4326)
+      site_poly = .sitepoly(location)
     ),
     by = cluster
   ]
 
-  polys[, site_poly_center := st_centroid(polys$site_poly)]
+  polys[,
+    site_poly_center := st_centroid(polys$site_poly) |> st_transform(crs = 4326)
+  ]
+
+  polys[,
+    site_poly := st_transform(site_poly, crs = 4326)
+  ]
 
   o = merge(x, polys, by = "cluster")
   o
