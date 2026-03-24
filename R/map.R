@@ -135,9 +135,8 @@ map <- function(ctdf, path, name, fix_dateline = FALSE) {
     pt_lab = glue(
       "
         .id: {`.id`}  <br>
-        .move_seg: {`.move_seg`}  <br>
         time:    {format(timestamp, '%d-%b-%y %H:%M')} <br>
-        p.clus: {`.putative_cluster`}  <br>
+        lof: {round(lof,2)} 
       "
     )
   ) |>
@@ -151,13 +150,19 @@ map <- function(ctdf, path, name, fix_dateline = FALSE) {
   sites[tenure < 1, Tenure := glue_data(.SD, "{round(tenure*24)}[h]")]
   sites[tenure > 1, Tenure := glue_data(.SD, "{round(tenure,1)}[d]")]
   sites[,
-    lab := glue_data(
+    lab := glue::glue_data(
       .SD,
-      "tenure:{Tenure}                    <br/>
-    start:{format(start, '%d-%b-%y %Hh')} <br/>
-    stop:{format(stop, '%d-%b-%y %Hh')}   <br/>
-    ids:{ids}        <br/>
-    N:{N}"
+      '
+    <table class="popup-table">
+      <tr><th>tenure</th><td>{Tenure}</td></tr>
+      <tr><th>start</th><td>{format(start, "%d-%b-%y %Hh")}</td></tr>
+      <tr><th>stop</th><td>{format(stop, "%d-%b-%y %Hh")}</td></tr>
+      <tr><th>elongation</th><td>&nbsp;{round(elongation, 2)}</td></tr>
+      <tr><th>lof_q95</th><td>{round(lof_q95, 2)}</td></tr>
+      <tr><th>ids</th><td>{ids}</td></tr>
+      <tr><th>N</th><td>{N}</td></tr>
+    </table>
+    '
     )
   ]
 
