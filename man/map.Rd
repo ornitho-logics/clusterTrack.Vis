@@ -7,7 +7,13 @@
 \usage{
 map(ctdf, fix_dateline = FALSE)
 
-save_map(x, path, selfcontained = FALSE, libdir = "assets")
+save_map(
+  x,
+  path,
+  name = attr(x, "map_name", exact = TRUE),
+  selfcontained = FALSE,
+  libdir = "assets"
+)
 }
 \arguments{
 \item{ctdf}{A \code{ctdf} object produced by \code{\link[clusterTrack:cluster_track]{clusterTrack::cluster_track()}}.}
@@ -17,6 +23,9 @@ save_map(x, path, selfcontained = FALSE, libdir = "assets")
 \item{x}{A \code{leaflet} map object produced by \code{map()}.}
 
 \item{path}{Character. Directory where the HTML map will be saved.}
+
+\item{name}{Character. File name stem for the saved map. Defaults to the
+\code{map_name} attribute set by \code{\link[=map]{map()}}.}
 
 \item{selfcontained}{Logical. Passed to \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}.
 Set it to \code{TRUE} only when you want to save a single map.}

@@ -219,19 +219,25 @@ map <- function(ctdf, fix_dateline = FALSE) {
 #'
 #' @param x A `leaflet` map object produced by `map()`.
 #' @param path Character. Directory where the HTML map will be saved.
+#' @param name Character. File name stem for the saved map. Defaults to the
+#'   `map_name` attribute set by [map()].
 #' @param selfcontained Logical. Passed to [htmlwidgets::saveWidget()].
-#'    Set it to `TRUE` only when you want to save a single map.
+#'   Set it to `TRUE` only when you want to save a single map.
 #' @param libdir Character. Directory for widget assets when
 #'   `selfcontained = FALSE`.
 #'
 #' @export
-save_map <- function(x, path, selfcontained = FALSE, libdir = "assets") {
-  name = attr(x, "map_name", exact = TRUE)
-
+save_map <- function(
+  x,
+  path,
+  name = attr(x, "map_name", exact = TRUE),
+  selfcontained = FALSE,
+  libdir = "assets"
+) {
   if (is.null(name) || is.na(name) || !nzchar(name)) {
     stop(
-      "`x` does not have a `map_name` attribute. ",
-      "Create it with `map()` before calling `save_map()`.",
+      "`name` must be provided, or `x` must have a `map_name` attribute. ",
+      "Create `x` with `map()` before calling `save_map()`.",
       call. = FALSE
     )
   }
