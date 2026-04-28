@@ -50,8 +50,9 @@
 #' Plot per-cluster histograms of observation times with cluster start/stop markers,
 #' stacked vertically.
 #'
-#' @param ctdf A `ctdf` object.
+#' @param x A `ctdf` object.
 #' @param binwidth Bin width in seconds (POSIXct is binned in seconds). Defaults to 1 hour.
+#' @param ... Ignored.
 #' @method hist ctdf
 #' @importFrom graphics hist
 #'
@@ -63,18 +64,18 @@
 #' data(pesa56511)
 #' ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
 #' hist(ctdf)
+hist.ctdf <- function(x, binwidth = 3600, ...) {
+  clusterTrack:::.check_ctdf(x)
 
-hist.ctdf <- function(ctdf, binwidth = 3600) {
-  clusterTrack:::.check_ctdf(ctdf)
+  x = data.table::copy(x)
 
-  x = copy(ctdf)
   if (x[, is.na(cluster) |> all()]) {
     x[, cluster := .putative_cluster]
     warning("No final cluster found, plotting `.putative_cluster`-s")
   }
 
   if (x[, is.na(cluster) |> all()]) {
-    stop('This ctdf does not contain any clusters.')
+    stop("This ctdf does not contain any clusters.")
   }
 
   .hist_ctdf_ggplot(x, binwidth = binwidth)

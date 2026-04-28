@@ -1,93 +1,41 @@
-.map_empty = function() {
-  leaflet(
-    options = leafletOptions(
-      zoomSnap = 0.25
-    )
-  ) |>
-
-    addProviderTiles(
-      "CartoDB.Positron",
-      group = "Light",
-      options = providerTileOptions(
-        maxNativeZoom = 18,
-        maxZoom = 21
-      )
-    ) |>
-    addProviderTiles(
-      "Esri.WorldImagery",
-      group = "Satellite"
-    ) |>
-    addProviderTiles(
-      "OpenTopoMap",
-      group = "Topo"
-    ) |>
-    addLayersControl(
-      baseGroups = c(
-        "Light",
-        "Satellite",
-        "Topo"
-      ),
-      options = layersControlOptions(collapsed = TRUE),
-      position = "topleft"
-    ) |>
-    addFullscreenControl(
-      position = "topleft",
-      pseudoFullscreen = FALSE
-    ) |>
-    addMeasure(
-      position = "topleft",
-      primaryLengthUnit = "kilometers",
-      secondaryLengthUnit = "meters",
-      primaryAreaUnit = "sqmeters"
-    ) |>
-    addScaleBar(position = "bottomleft")
-}
-
-.info_box <- function(items) {
-  html_list =
-    sapply(items, function(item) glue::glue("<li>{item}</li>")) |>
-    glue_collapse()
-  html_list = glue::glue("<ul>{html_list}</ul>")
-
-  htmltools::HTML(
-    glue::glue(
-      '<div class="modal" id="infobox" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-body">
-              {html_list}
-            </div>
-          </div>
-        </div>
-      </div>'
-    )
-  )
-}
-
-#' Map a ctdf object
+#' Map and save a ctdf object
 #'
-#' Visualize clustered track data on an interactive map.
+#' Visualize clustered track data on an interactive leaflet map and optionally
+#' save the resulting widget with [save_map()].
 #'
-#' @param ctdf A `ctdf` object produced by `cluster_track()`.
-#' @param path Optional `character`. File path where the HTML map will be saved.
-#'             If omitted, the function returns the `leaflet` map object.
-#' @param name When path is given, the name of the html file.
-#' @return A `leaflet` map object if `path` is not provided.
-#'        If `path` is provided, an HTML file (and its `assets/` directory) is written to disk.
-#' @seealso [clusterTrack::cluster_track()], [htmlwidgets::saveWidget()]
-#
+#' `map()` builds a `leaflet` map from a `ctdf` object. The returned map stores
+#' the input object name in its `map_name` attribute, which is used by
+#' `save_map()` as the output HTML filename.
 #'
-#' @param ctdf A `ctdf` object.
+#' @param ctdf A `ctdf` object produced by [cluster_track()].
+#' @param fix_dateline Logical. If `TRUE`, geometries are adjusted with [sf::st_wrap_dateline()].
+#'
+#' @return
+#' `map()` returns a `leaflet` map object with a `map_name` attribute.
+#'
+#' `save_map()` invisibly returns the written HTML file path.
+#'
+#' @seealso [cluster_track()], [htmlwidgets::saveWidget()]
+#'
 #' @export
+#'
 #' @examples
 #' data(mini_ruff)
+#'
 #' ctdf = as_ctdf(mini_ruff)
-#' map(ctdf) # empty map
-#' cluster_track(ctdf)
 #' map(ctdf)
-#' map(ctdf, path = "~/Desktop/temp")
+#'
+#' ctdf = cluster_track(ctdf)
+#'
+#' mm = map(ctdf)
+#'
+#' \dontrun{
+#' mm |>
+#'   leaflet::addMarkers(lng = 11, lat = 47) |>
+#'   save_map(path = "~/Desktop/temp")
+#' }
 
-map <- function(ctdf, path, name, fix_dateline = FALSE) {
+map <- function(ctdf, fix_dateline = FALSE) {
   clusterTrack:::.check_ctdf(ctdf)
 
   all_track = as_ctdf_track(ctdf) |> st_transform(crs = "OGC:CRS84") |> setDT()
@@ -106,6 +54,7 @@ map <- function(ctdf, path, name, fix_dateline = FALSE) {
         color = "#d32013cc",
         weight = 2
       )
+    attr(mm, "map_name") = deparse1(substitute(ctdf))
     return(mm)
   }
 
@@ -130,27 +79,29 @@ map <- function(ctdf, path, name, fix_dateline = FALSE) {
     CD = .fix_dateline(CD)
   }
 
-  CD = mutate(
-    CD,
-    pt_lab = glue(
+  CD$pt_lab = Map(
+    function(.id, timestamp, lof) {
+      HTML(glue(
+        "
+      .id:  {.id}  <br>
+      time: {format(timestamp, '%d-%b-%y %H:%M')} <br>
+      lof:  {round(lof, 2)}
       "
-        .id: {`.id`}  <br>
-        time:    {format(timestamp, '%d-%b-%y %H:%M')} <br>
-        lof: {round(lof,2)} 
-      "
-    )
-  ) |>
-    rowwise() |>
-    mutate(pt_lab = htmltools::HTML(pt_lab))
+      ))
+    },
+    CD$.id,
+    CD$timestamp,
+    CD$lof
+  )
 
-  move_points = dplyr::filter(CD, cluster == 0)
-  site_points = dplyr::filter(CD, cluster != 0)
+  move_points = CD[CD$cluster == 0, ]
+  site_points = CD[CD$cluster != 0, ]
 
   sites = summarise_ctdf(ctdf)
   sites[tenure < 1, Tenure := glue_data(.SD, "{round(tenure*24)}[h]")]
   sites[tenure > 1, Tenure := glue_data(.SD, "{round(tenure,1)}[d]")]
   sites[,
-    lab := glue::glue_data(
+    lab := glue_data(
       .SD,
       '
     <table class="popup-table">
@@ -180,7 +131,7 @@ map <- function(ctdf, path, name, fix_dateline = FALSE) {
 
   # map elements
   pal = colorFactor(
-    viridis::viridis(unique(sites$cluster) |> length()),
+    viridisLite::viridis(unique(sites$cluster) |> length()),
     sites$cluster
   )
 
@@ -258,39 +209,53 @@ map <- function(ctdf, path, name, fix_dateline = FALSE) {
       .info_box(nfo)
     )
 
-  if ("true_cluster" %in% names(CD)) {
-    mm =
-      mm |>
-      addCircleMarkers(
-        data = dplyr::filter(CD, true_cluster > 0),
-        radius = 6,
-        color = ~"#e75d01",
-        fillOpacity = 0,
-        weight = 1.5,
-        label = ~ paste("true clust:", true_cluster)
+  attr(mm, "map_name") = deparse1(substitute(ctdf))
+
+  mm
+}
+
+
+#' @describeIn map Save a leaflet map produced by `map()` as an HTML widget.
+#'
+#' @param x A `leaflet` map object produced by `map()`.
+#' @param path Character. Directory where the HTML map will be saved.
+#' @param selfcontained Logical. Passed to [htmlwidgets::saveWidget()].
+#'    Set it to `TRUE` only when you want to save a single map.
+#' @param libdir Character. Directory for widget assets when
+#'   `selfcontained = FALSE`.
+#'
+#' @export
+save_map <- function(x, path, selfcontained = FALSE, libdir = "assets") {
+  name = attr(x, "map_name", exact = TRUE)
+
+  if (is.null(name) || is.na(name) || !nzchar(name)) {
+    stop(
+      "`x` does not have a `map_name` attribute. ",
+      "Create it with `map()` before calling `save_map()`.",
+      call. = FALSE
+    )
+  }
+
+  if (!selfcontained) {
+    x = x |>
+      appendContent(
+        .navbuttons()
       )
   }
 
-  if (!missing(path)) {
-    if (missing(name)) {
-      name = as.character(substitute(ctdf))
-    }
-    this_path = paste0(path, "/", name, ".html")
-
-    if (!dir.exists(path)) {
-      dir.create(path, recursive = TRUE)
-    }
-
-    saveWidget(
-      mm,
-      file = this_path,
-      title = name,
-      selfcontained = FALSE,
-      libdir = "assets"
-    )
-
-    message(name)
-  } else {
-    return(mm)
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
   }
+
+  file = file.path(path, paste0(name, ".html"))
+
+  saveWidget(
+    widget = x,
+    file = file,
+    title = name,
+    selfcontained = selfcontained,
+    libdir = libdir
+  )
+
+  invisible(file)
 }

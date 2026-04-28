@@ -2,32 +2,62 @@
 % Please edit documentation in R/map.R
 \name{map}
 \alias{map}
-\title{Map a ctdf object}
+\alias{save_map}
+\title{Map and save a ctdf object}
 \usage{
-map(ctdf, path, name, fix_dateline = FALSE)
+map(ctdf, fix_dateline = FALSE)
+
+save_map(x, path, selfcontained = FALSE, libdir = "assets")
 }
 \arguments{
-\item{ctdf}{A \code{ctdf} object.}
+\item{ctdf}{A \code{ctdf} object produced by \code{\link[clusterTrack:cluster_track]{clusterTrack::cluster_track()}}.}
 
-\item{path}{Optional \code{character}. File path where the HTML map will be saved.
-If omitted, the function returns the \code{leaflet} map object.}
+\item{fix_dateline}{Logical. If \code{TRUE}, geometries are adjusted with \code{\link[sf:st_transform]{sf::st_wrap_dateline()}}.}
 
-\item{name}{When path is given, the name of the html file.}
+\item{x}{A \code{leaflet} map object produced by \code{map()}.}
+
+\item{path}{Character. Directory where the HTML map will be saved.}
+
+\item{selfcontained}{Logical. Passed to \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}.
+Set it to \code{TRUE} only when you want to save a single map.}
+
+\item{libdir}{Character. Directory for widget assets when
+\code{selfcontained = FALSE}.}
 }
 \value{
-A \code{leaflet} map object if \code{path} is not provided.
-If \code{path} is provided, an HTML file (and its \verb{assets/} directory) is written to disk.
+\code{map()} returns a \code{leaflet} map object with a \code{map_name} attribute.
+
+\code{save_map()} invisibly returns the written HTML file path.
 }
 \description{
-Visualize clustered track data on an interactive map.
+Visualize clustered track data on an interactive leaflet map and optionally
+save the resulting widget with \code{\link[=save_map]{save_map()}}.
 }
+\details{
+\code{map()} builds a \code{leaflet} map from a \code{ctdf} object. The returned map stores
+the input object name in its \code{map_name} attribute, which is used by
+\code{save_map()} as the output HTML filename.
+}
+\section{Functions}{
+\itemize{
+\item \code{save_map()}: Save a leaflet map produced by \code{map()} as an HTML widget.
+
+}}
 \examples{
 data(mini_ruff)
+
 ctdf = as_ctdf(mini_ruff)
-map(ctdf) # empty map
-cluster_track(ctdf)
 map(ctdf)
-map(ctdf, path = "~/Desktop/temp")
+
+ctdf = cluster_track(ctdf)
+
+mm = map(ctdf)
+
+\dontrun{
+mm |>
+  leaflet::addMarkers(lng = 11, lat = 47) |>
+  save_map(path = "~/Desktop/temp")
+}
 }
 \seealso{
 \code{\link[clusterTrack:cluster_track]{clusterTrack::cluster_track()}}, \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}

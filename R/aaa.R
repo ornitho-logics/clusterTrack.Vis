@@ -1,21 +1,39 @@
+#' @import clusterTrack
 #' @import data.table stringr
 #' @import sf leaflet ggplot2
-#'
+#' @import yyjsonr
+
+#' @importFrom stats quantile
+
 #' @importFrom leaflet.extras2 addTimeslider timesliderOptions
 #' @importFrom leaflet.extras addBootstrapDependency addFullscreenControl
+
 #' @importFrom htmlwidgets appendContent saveWidget
+#' @importFrom htmltools HTML tagList tags htmlDependency attachDependencies htmlEscape
+
 #' @importFrom glue glue glue_data glue_collapse
 #' @importFrom stringr str_remove
-#' @importFrom dplyr filter mutate rowwise
 #
-#  generate_clustered_traj
-#' @importFrom trajr TrajGenerate
-#' @importFrom data.table setDT data.table setorder ':=' shift
-#' @importFrom scales rescale
-#' @importFrom lubridate seconds
-#' @importFrom MASS mvrnorm
-#' @importFrom forcats fct_inorder
-#' @importFrom webshot2 webshot
 #'
 #'
 NULL
+
+
+utils::globalVariables(c(
+  ".",
+  ".putative_cluster",
+  "cluster",
+  "html_path",
+  "lab",
+  "location",
+  "name",
+  "site_poly",
+  "site_poly_center",
+  "start",
+  "stop",
+  "tenure",
+  "Tenure",
+  "thumb_path",
+  "timestamp",
+  "todo"
+))

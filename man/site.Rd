@@ -16,22 +16,24 @@ navigate to the saved map \code{.html} files in the folder.
 }
 \examples{
 \dontrun{
+
 siteloc = "~/Desktop/temp"
+if(dir.exists(siteloc)) unlink(siteloc)
 data(mini_ruff)
 mini_ruff = as_ctdf(mini_ruff) |> cluster_track()
-map(mini_ruff, path = siteloc, name = "(ruff_143789_subset")
+map(mini_ruff) |> save_map(path=siteloc)
 
 data(pesa56511)
 pesa = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
-map(pesa, path = siteloc)
+map(pesa) |> save_map(path=siteloc)
 
 data(ruff143789)
 ruff = as_ctdf(ruff143789, time = "locationDate") |> cluster_track()
-map(ruff, path = siteloc)
+map(ruff) |> save_map(path=siteloc)
 
 data(lbdo66862)
 lbdo = as_ctdf(lbdo66862, time = "locationDate") |> cluster_track()
-map(lbdo, path = siteloc)
+map(lbdo) |> save_map(path=siteloc)
 
 site(siteloc)
 

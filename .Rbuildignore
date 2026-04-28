@@ -1,3 +1,6 @@
 ^clusterTrack\.Vis\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^\.positai$
+^\.claude$
+^\.vscode$

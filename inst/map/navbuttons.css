@@ -1,0 +1,89 @@
+
+.ct-navbuttons {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.ct-navbutton {
+  position: relative;
+  display: inline-block;
+  padding: 4px 2px 8px;
+  color: #111;
+  text-decoration: none;
+  font-weight: 500;
+  line-height: 1.2;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ct-navbutton::after {
+  content: "";
+  position: absolute;
+  left: -9px;
+  right: -9px;
+  bottom: 0;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0.55;
+  transform: scaleX(1);
+  transform-origin: center;
+  transition:
+    left 160ms ease,
+    right 160ms ease,
+    height 160ms ease,
+    opacity 160ms ease;
+}
+
+.ct-navbutton:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.ct-navbutton:hover::after {
+  left: -14px;
+  right: -14px;
+  height: 2px;
+  opacity: 1;
+}
+
+.ct-navbutton-home {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.82;
+}
+
+.ct-navbutton-home::after {
+  left: -6px;
+  right: -6px;
+  opacity: 0.35;
+}
+
+.ct-navbutton-home:hover {
+  opacity: 1;
+}
+
+.ct-navbutton-home:hover::after {
+  left: -9px;
+  right: -9px;
+}
+
+.ct-navbutton-disabled {
+  color: #777;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ct-navbutton-disabled::after {
+  opacity: 0.22;
+}

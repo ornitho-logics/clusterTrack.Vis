@@ -13,5 +13,19 @@ Depends:
     R (>= 4.1.0),
     clusterTrack
 Imports: 
-    clusterTrack,
-    leaflet
+    data.table,
+    ggplot2,
+    glue,
+    htmltools,
+    htmlwidgets,
+    leaflet,
+    leaflet.extras,
+    leaflet.extras2,
+    yyjsonr,
+    sf,
+    stringr,
+    viridisLite
+Suggests:
+    testthat (>= 3.0.0),
+    webshot2
+Config/testthat/edition: 3

@@ -4,12 +4,14 @@
 \alias{hist.ctdf}
 \title{Histogram of observation times by cluster}
 \usage{
-\method{hist}{ctdf}(ctdf, binwidth = 3600)
+\method{hist}{ctdf}(x, binwidth = 3600, ...)
 }
 \arguments{
-\item{ctdf}{A \code{ctdf} object.}
+\item{x}{A \code{ctdf} object.}
 
 \item{binwidth}{Bin width in seconds (POSIXct is binned in seconds). Defaults to 1 hour.}
+
+\item{...}{Ignored.}
 }
 \value{
 A \code{ggplot}.

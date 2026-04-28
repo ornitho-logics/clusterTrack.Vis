@@ -44,6 +44,17 @@
 }
 
 
+#' Prepare thumbnail cards for saved maps
+#'
+#' Create thumbnails for saved `.html` map files and return an HTML gallery.
+#'
+#' @param info_text Character vector of text shown below each thumbnail.
+#' @param path Directory containing saved `.html` map files.
+#' @param overwrite Logical. Regenerate existing thumbnails?
+#' @param where Relative thumbnail directory inside `path`.
+#'
+#' @return An `htmltools` HTML object.
+#'
 #' @export
 prepare_thumbs <- function(
   info_text,
@@ -51,6 +62,10 @@ prepare_thumbs <- function(
   overwrite = FALSE,
   where = "assets/thumbs"
 ) {
+  if (!requireNamespace("webshot2", quietly = TRUE)) {
+    stop("Package 'webshot2' is required for prepare_thumbs().", call. = FALSE)
+  }
+
   if (missing(path)) {
     path = getwd()
   }
@@ -121,22 +136,24 @@ prepare_thumbs <- function(
 #' @export
 #' @examples
 #' \dontrun{
+#'
 #' siteloc = "~/Desktop/temp"
+#' if(dir.exists(siteloc)) unlink(siteloc)
 #' data(mini_ruff)
 #' mini_ruff = as_ctdf(mini_ruff) |> cluster_track()
-#' map(mini_ruff, path = siteloc, name = "(ruff_143789_subset")
+#' map(mini_ruff) |> save_map(path=siteloc)
 #'
 #' data(pesa56511)
 #' pesa = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
-#' map(pesa, path = siteloc)
+#' map(pesa) |> save_map(path=siteloc)
 #'
 #' data(ruff143789)
 #' ruff = as_ctdf(ruff143789, time = "locationDate") |> cluster_track()
-#' map(ruff, path = siteloc)
+#' map(ruff) |> save_map(path=siteloc)
 #'
 #' data(lbdo66862)
 #' lbdo = as_ctdf(lbdo66862, time = "locationDate") |> cluster_track()
-#' map(lbdo, path = siteloc)
+#' map(lbdo) |> save_map(path=siteloc)
 #'
 #' site(siteloc)
 #'
@@ -144,22 +161,44 @@ prepare_thumbs <- function(
 #' }
 
 site <- function(path) {
-  file.copy(
-    system.file("site_template/index.qmd", package = "clusterTrack.Vis"),
-    path
+  path = path.expand(path)
+
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+  }
+
+  updated = .update_map_navigation(path)
+
+  template = system.file(
+    "site_template/index.qmd",
+    package = "clusterTrack.Vis"
   )
+
+  index = file.path(path, "index.qmd")
+
+  file.copy(
+    from = template,
+    to = index,
+    overwrite = TRUE
+  )
+
   message(
+    "Updated navigation in ",
+    length(updated),
+    " map file(s).\n",
     "Copied Quarto template to: ",
-    file.path(path, "index.qmd"),
+    index,
     "\n",
     "Next:\n",
     "  1) Open and edit index.qmd (optional).\n",
     "  2) Render it to create index.html, e.g.:\n",
     "     quarto render ",
-    file.path(path, "index.qmd"),
+    index,
     "\n",
     "  3) Open ",
     shQuote(file.path(path, "index.html")),
     " in a browser."
   )
+
+  invisible(index)
 }
