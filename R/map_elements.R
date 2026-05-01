@@ -70,6 +70,7 @@
     name = "clusterTrack-navbuttons",
     version = as.character(utils::packageVersion("clusterTrack.Vis")),
     src = "map",
+    package = "clusterTrack.Vis",
     stylesheet = "navbuttons.css",
     script = "navbuttons.js"
   )
