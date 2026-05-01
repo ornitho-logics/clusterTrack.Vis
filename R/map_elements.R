@@ -69,7 +69,7 @@
   htmlDependency(
     name = "clusterTrack-navbuttons",
     version = as.character(utils::packageVersion("clusterTrack.Vis")),
-    src = c(file = system.file("map", package = "clusterTrack.Vis")),
+    src = "map",
     stylesheet = "navbuttons.css",
     script = "navbuttons.js"
   )
