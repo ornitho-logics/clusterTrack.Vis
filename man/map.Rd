@@ -16,9 +16,9 @@ save_map(
 )
 }
 \arguments{
-\item{ctdf}{A \code{ctdf} object produced by \code{\link[clusterTrack:cluster_track]{clusterTrack::cluster_track()}}.}
+\item{ctdf}{A \code{ctdf} object produced by \code{\link[clusterTrack:cluster_track]{cluster_track()}}.}
 
-\item{fix_dateline}{Logical. If \code{TRUE}, geometries are adjusted with \code{\link[sf:st_transform]{sf::st_wrap_dateline()}}.}
+\item{fix_dateline}{Logical. If \code{TRUE}, geometries are adjusted with \code{\link[sf:st_wrap_dateline]{sf::st_wrap_dateline()}}.}
 
 \item{x}{A \code{leaflet} map object produced by \code{map()}.}
 
@@ -69,5 +69,5 @@ mm |>
 }
 }
 \seealso{
-\code{\link[clusterTrack:cluster_track]{clusterTrack::cluster_track()}}, \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}
+\code{\link[clusterTrack:cluster_track]{cluster_track()}}, \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}
 }

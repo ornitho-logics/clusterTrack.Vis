@@ -99,7 +99,6 @@
   )
 }
 
-
 .navbuttons <- function(
   next_map = NULL,
   prev_map = NULL,
@@ -144,6 +143,7 @@
     .navbuttons_dependency()
   )
 }
+
 
 .html_has_navbuttons <- function(file) {
   html = readLines(file, warn = FALSE, encoding = "UTF-8")
