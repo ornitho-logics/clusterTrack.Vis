@@ -4,3 +4,9 @@
 ^\.positai$
 ^\.claude$
 ^\.vscode$
+^dev$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^\.quarto$

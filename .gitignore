@@ -2,4 +2,4 @@
 index.html
 .positai
 /.quarto/
-**/*.quarto_ipynb
+docs

@@ -1,0 +1,23 @@
+# one-time repo setup
+usethis::use_build_ignore("dev")
+usethis::use_build_ignore(".quarto")
+usethis::use_pkgdown_github_pages()
+usethis::use_article("pesa.qmd")
+
+
+# local preview & cleanup
+pkgdown::build_site(new_process = TRUE, quiet = FALSE)
+
+pkgdown::clean_site()
+
+unlink(
+  list.files("vignettes/articles", pattern = "_files$", full.names = TRUE),
+  recursive = TRUE,
+  force = TRUE
+)
+
+
+# deploy
+pkgdown::deploy_to_branch()
+
+pkgdown::clean_site()

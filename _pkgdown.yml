@@ -1,0 +1,54 @@
+url: https://ornitho-logics.github.io/clusterTrack.Vis/
+title: clusterTrack.Vis
+
+template:
+  bootstrap: 5
+
+repo:
+  url:
+    home: https://github.com/ornitho-logics/clusterTrack.Vis
+    source: https://github.com/ornitho-logics/clusterTrack.Vis/blob/HEAD/
+    issue: https://github.com/ornitho-logics/clusterTrack.Vis/issues/
+    user: https://github.com/
+
+home:
+  title: clusterTrack.Vis
+
+  links:
+  - text: Main clusterTrack package
+    href: https://github.com/ornitho-logics/clusterTrack
+  - text: clusterTrack website
+    href: https://ornitho-logics.github.io/clusterTrack/
+
+navbar:
+  structure:
+    left: [ reference, articles ]
+    right: [ search, github ]
+
+development:
+  mode: auto
+
+reference:
+- title: Mapping clustered tracks
+  desc: Create and save interactive maps from clusterTrack ctdf objects.
+  contents:
+  - map
+  - save_map
+
+- title: Map galleries
+  desc: Build simple browsing pages and thumbnails for saved map outputs.
+  contents:
+  - site
+  - prepare_thumbs
+
+- title: Summaries and diagnostics
+  desc: Summarise clustered tracks and inspect observation timing by cluster.
+  contents:
+  - summarise_ctdf
+  - hist.ctdf
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - matches(".*")
