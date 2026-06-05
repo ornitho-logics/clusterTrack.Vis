@@ -20,15 +20,16 @@ summarise_ctdf(ctdf)
 data(pesa56511)
 ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
 #> → Find putative cluster regions.
-#>  ⠙ 17 segments processed [2.1s]
-#>  ⠹ 20 segments processed [2.2s]
-#>  ⠸ 23 segments processed [2.4s]
-#>  ⠼ 29 segments processed [2.6s]
-#>  ⠴ 34 segments processed [2.9s]
-#>  ⠦ 36 segments processed [3s]
-#>  ⠧ 41 segments processed [3.2s]
-#>  ⠇ 45 segments processed [3.4s]
-#>  ⠇ 46 segments processed [3.5s]
+#>  ⠙ 13 segments processed [2s]
+#>  ⠹ 17 segments processed [2.2s]
+#>  ⠸ 18 segments processed [2.4s]
+#>  ⠼ 23 segments processed [2.9s]
+#>  ⠴ 28 segments processed [3s]
+#>  ⠦ 30 segments processed [3.1s]
+#>  ⠧ 34 segments processed [3.4s]
+#>  ⠇ 36 segments processed [3.5s]
+#>  ⠏ 41 segments processed [3.7s]
+#>  ⠋ 46 segments processed [4s]
 #> ! Repairing[1]...
 #> → Local clustering.
 #> ! Repairing[2]...

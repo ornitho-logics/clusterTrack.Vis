@@ -7,9 +7,6 @@
 
 ## Citation
 
-Source:
-[`DESCRIPTION`](https://github.com/ornitho-logics/clusterTrack.Vis/blob/HEAD/DESCRIPTION)
-
 Valcu M (2026). *clusterTrack.Vis: Clustertrack Mapping and Other
 Visualizations*. R package version 0.0.1,
 <https://ornitho-logics.github.io/clusterTrack.Vis/>.
