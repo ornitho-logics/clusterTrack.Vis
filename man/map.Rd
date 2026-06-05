@@ -61,7 +61,7 @@ map(ctdf)
 ctdf = cluster_track(ctdf)
 
 mm = map(ctdf)
-
+mm
 \dontrun{
 mm |>
   leaflet::addMarkers(lng = 11, lat = 47) |>
