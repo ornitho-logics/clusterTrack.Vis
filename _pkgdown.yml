@@ -7,9 +7,7 @@ template:
 repo:
   url:
     home: https://github.com/ornitho-logics/clusterTrack.Vis
-    source: https://github.com/ornitho-logics/clusterTrack.Vis/blob/HEAD/
     issue: https://github.com/ornitho-logics/clusterTrack.Vis/issues/
-    user: https://github.com/
 
 home:
   title: clusterTrack.Vis
