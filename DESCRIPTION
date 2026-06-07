@@ -28,6 +28,7 @@ Imports:
     viridisLite
 Suggests:
     testthat (>= 3.0.0),
+    quarto,
     webshot2
 VignetteBuilder:
     quarto        

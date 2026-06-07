@@ -10,3 +10,9 @@
 ^pkgdown$
 ^\.github$
 ^\.quarto$
+
+^vignettes/articles$
+^vignettes/\.quarto$
+^vignettes/articles/\.quarto$
+^vignettes/.*\.html$
+^vignettes/.*_files$
