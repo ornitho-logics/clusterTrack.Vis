@@ -20,16 +20,6 @@ summarise_ctdf(ctdf)
 data(pesa56511)
 ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
 #> → Find putative cluster regions.
-#>  ⠙ 13 segments processed [2s]
-#>  ⠹ 17 segments processed [2.2s]
-#>  ⠸ 18 segments processed [2.4s]
-#>  ⠼ 23 segments processed [2.9s]
-#>  ⠴ 28 segments processed [3s]
-#>  ⠦ 30 segments processed [3.1s]
-#>  ⠧ 34 segments processed [3.4s]
-#>  ⠇ 36 segments processed [3.5s]
-#>  ⠏ 41 segments processed [3.7s]
-#>  ⠋ 46 segments processed [4s]
 #> ! Repairing[1]...
 #> → Local clustering.
 #> ! Repairing[2]...
@@ -50,8 +40,8 @@ summarise_ctdf(ctdf)
 #> 1:  1.2326736 days  82997.623 [m]  0.0000000 POINT (-156.6314 71.32439)
 #> 2:  0.3322454 days   4482.812 [m]  0.0000000 POINT (-155.0001 71.10669)
 #> 3:  0.4594444 days 111252.561 [m]  0.0000000 POINT (-154.9363 71.04556)
-#> 4:  0.2079398 days 204855.239 [m]  0.2138568 POINT (-152.6047 70.64368)
-#> 5:  3.9027894 days 399667.879 [m]  0.9685747 POINT (-148.9947 70.35698)
+#> 4:  0.2079398 days 204855.239 [m]  0.2138571 POINT (-152.6047 70.64368)
+#> 5:  3.9027894 days 399667.879 [m]  0.9685742 POINT (-148.9947 70.35698)
 #> 6: 10.6916088 days         NA [m]  0.0000000  POINT (-156.6161 71.2825)
 #>                         site_poly           site_poly_center
 #>                     <sfc_POLYGON>                <sfc_POINT>
