@@ -11,6 +11,8 @@ Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.1.0),
     clusterTrack
+Remotes:
+    ornitho-logics/clusterTrack    
 Imports: 
     data.table,
     ggplot2,
