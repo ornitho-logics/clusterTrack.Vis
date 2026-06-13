@@ -64,7 +64,6 @@
   )
 }
 
-
 .navbuttons_dependency <- function() {
   htmlDependency(
     name = "clusterTrack-navbuttons",
@@ -76,14 +75,8 @@
   )
 }
 
-
-.nav_is_available <- function(x) {
-  !is.null(x) && !is.na(x) && nzchar(x)
-}
-
-
 .navbutton <- function(href, label) {
-  if (!.nav_is_available(href)) {
+  if (!isTRUE(!is.na(href) && nzchar(hrefx))) {
     return(
       tags$span(
         class = "ct-navbutton ct-navbutton-disabled",
@@ -104,7 +97,7 @@
   prev_map = NULL,
   home_map = "index.html"
 ) {
-  nav_value <- function(x) {
+  f <- function(x) {
     if (is.null(x) || is.na(x) || !nzchar(x)) {
       return("")
     }
@@ -114,8 +107,8 @@
 
   nav = tags$div(
     class = "ct-navbuttons",
-    `data-prev-map` = nav_value(prev_map),
-    `data-next-map` = nav_value(next_map),
+    `data-prev-map` = f(prev_map),
+    `data-next-map` = f(next_map),
 
     tags$span(
       class = "ct-navbutton ct-navbutton-prev",
@@ -144,12 +137,10 @@
   )
 }
 
-
 .html_has_navbuttons <- function(file) {
   html = readLines(file, warn = FALSE, encoding = "UTF-8")
   any(grepl("ct-navbuttons", html, fixed = TRUE))
 }
-
 
 .update_single_map_navigation <- function(file, prev_map = "", next_map = "") {
   html = readLines(file, warn = FALSE, encoding = "UTF-8")
@@ -179,8 +170,7 @@
   invisible(TRUE)
 }
 
-
-.update_map_navigation = function(path) {
+.update_map_navigation <- function(path) {
   path = path.expand(path)
 
   files = list.files(
