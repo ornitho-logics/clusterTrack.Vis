@@ -1,18 +1,18 @@
-^clusterTrack\.Vis\.Rproj$
+^.*\.Rproj$
 ^\.Rproj\.user$
-^README\.Rmd$
-^\.positai$
-^\.claude$
 ^\.vscode$
-^dev$
+^[.]?air[.]toml$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^\.github$
-^\.quarto$
+^dev$
 
 ^vignettes/articles$
 ^vignettes/\.quarto$
 ^vignettes/articles/\.quarto$
 ^vignettes/.*\.html$
 ^vignettes/.*_files$
+^\.positai$
+^\.claude$
+Rplots.pdf

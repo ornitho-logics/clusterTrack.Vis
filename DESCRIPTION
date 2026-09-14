@@ -10,7 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.1.0),
-    clusterTrack
+    clusterTrack (>= 0.1.2)
 Remotes:
     ornitho-logics/clusterTrack    
 Imports: 

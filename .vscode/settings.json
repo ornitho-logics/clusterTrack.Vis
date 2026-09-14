@@ -8,5 +8,6 @@
     "**/.Rproj.user": true,
     "**/*.user": true
   },
-  "explorerExclude.backup": {}
+  "explorerExclude.backup": {},
+  "explorerExcludeManager.backup": {}
 }

@@ -65,7 +65,7 @@
 #' ctdf = as_ctdf(pesa56511, time = "locationDate") |> cluster_track()
 #' hist(ctdf)
 hist.ctdf <- function(x, binwidth = 3600, ...) {
-  clusterTrack:::.check_ctdf(x)
+  clusterTrack::validate_ctdf(x)
 
   x = data.table::copy(x)
 

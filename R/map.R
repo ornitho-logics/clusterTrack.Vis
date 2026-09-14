@@ -36,7 +36,7 @@
 #' }
 
 map <- function(ctdf, fix_dateline = FALSE) {
-  clusterTrack:::.check_ctdf(ctdf)
+  clusterTrack::validate_ctdf(ctdf)
 
   all_track = as_ctdf_track(ctdf) |> st_transform(crs = "OGC:CRS84") |> setDT()
   all_track[, let(segement = factor(.putative_cluster))]
