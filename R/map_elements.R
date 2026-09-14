@@ -5,11 +5,12 @@
     )
   ) |>
 
-    addProviderTiles(
-      "CartoDB.Positron",
+    addTiles(
+      urlTemplate = "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution = '&copy; OpenStreetMap contributors',
       group = "Light",
-      options = providerTileOptions(
-        maxNativeZoom = 18,
+      options = tileOptions(
+        maxNativeZoom = 19,
         maxZoom = 21
       )
     ) |>
@@ -44,10 +45,10 @@
 }
 
 .info_box <- function(items) {
-  html_list =
+  html_list <-
     sapply(items, function(item) glue::glue("<li>{item}</li>")) |>
     glue_collapse()
-  html_list = glue::glue("<ul>{html_list}</ul>")
+  html_list <- glue::glue("<ul>{html_list}</ul>")
 
   HTML(
     glue::glue(
@@ -105,7 +106,7 @@
     x
   }
 
-  nav = tags$div(
+  nav <- tags$div(
     class = "ct-navbuttons",
     `data-prev-map` = f(prev_map),
     `data-next-map` = f(next_map),
@@ -138,28 +139,28 @@
 }
 
 .html_has_navbuttons <- function(file) {
-  html = readLines(file, warn = FALSE, encoding = "UTF-8")
+  html <- readLines(file, warn = FALSE, encoding = "UTF-8")
   any(grepl("ct-navbuttons", html, fixed = TRUE))
 }
 
 .update_single_map_navigation <- function(file, prev_map = "", next_map = "") {
-  html = readLines(file, warn = FALSE, encoding = "UTF-8")
-  html = paste(html, collapse = "\n")
+  html <- readLines(file, warn = FALSE, encoding = "UTF-8")
+  html <- paste(html, collapse = "\n")
 
   if (!grepl("ct-navbuttons", html, fixed = TRUE)) {
     return(invisible(FALSE))
   }
 
-  prev_map = htmlEscape(prev_map)
-  next_map = htmlEscape(next_map)
+  prev_map <- htmlEscape(prev_map)
+  next_map <- htmlEscape(next_map)
 
-  html = sub(
+  html <- sub(
     'data-prev-map="[^"]*"',
     paste0('data-prev-map="', prev_map, '"'),
     html
   )
 
-  html = sub(
+  html <- sub(
     'data-next-map="[^"]*"',
     paste0('data-next-map="', next_map, '"'),
     html
@@ -171,28 +172,28 @@
 }
 
 .update_map_navigation <- function(path) {
-  path = path.expand(path)
+  path <- path.expand(path)
 
-  files = list.files(
+  files <- list.files(
     path = path,
     pattern = "\\.html$",
     full.names = TRUE
   )
 
-  files = files[basename(files) != "index.html"]
+  files <- files[basename(files) != "index.html"]
 
   if (!length(files)) {
     return(invisible(character()))
   }
 
-  has_nav = vapply(files, .html_has_navbuttons, logical(1))
-  files = files[has_nav]
+  has_nav <- vapply(files, .html_has_navbuttons, logical(1))
+  files <- files[has_nav]
 
   if (!length(files)) {
     return(invisible(character()))
   }
 
-  X = data.table(
+  X <- data.table(
     file = normalizePath(files, mustWork = TRUE),
     name = basename(files)
   )
@@ -200,8 +201,8 @@
   setorder(X, name)
 
   for (i in seq_len(nrow(X))) {
-    prev_map = if (i > 1) X$name[i - 1] else ""
-    next_map = if (i < nrow(X)) X$name[i + 1] else ""
+    prev_map <- if (i > 1) X$name[i - 1] else ""
+    next_map <- if (i < nrow(X)) X$name[i + 1] else ""
 
     .update_single_map_navigation(
       file = X$file[i],
