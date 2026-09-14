@@ -20,6 +20,8 @@ data(lbdo66862)
 
 ctdf <- as_ctdf(lbdo66862, time = "locationDate") |>
   cluster_track()
+#> Warning: Found 114 temporal gaps greater than 24 h (smallest: 24.06 h; largest:
+#> 215.8 h). Split the file manually at these gaps before running the clustering.
 
 map(ctdf)
 ```
@@ -34,13 +36,15 @@ map(ctdf)
   - trim = 0.05  
   - deltaT = NA  
   - aggregate_dist = NA
-- *clusterTrack v.0.1.1*
+- *clusterTrack v.0.1.2*
 
 ``` r
 
 
 summary(ctdf) |>
   head()
+#> <ctdf: 6 locations, 6 clusters, 0 unassigned>
+#> 
 #>    cluster               start                stop                  geometry
 #>      <int>              <POSc>              <POSc>               <sfc_POINT>
 #> 1:       1 2019-07-14 01:21:31 2019-08-02 04:29:09 POINT (-10063740 7768162)

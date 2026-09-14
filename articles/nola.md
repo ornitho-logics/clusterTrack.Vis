@@ -34,13 +34,15 @@ map(ctdf)
   - trim = 0.05  
   - deltaT = NA  
   - aggregate_dist = NA
-- *clusterTrack v.0.1.1*
+- *clusterTrack v.0.1.2*
 
 ``` r
 
 
 summary(ctdf) |>
   head()
+#> <ctdf: 6 locations, 6 clusters, 0 unassigned>
+#> 
 #>    cluster               start                stop                 geometry
 #>      <int>              <POSc>              <POSc>              <sfc_POINT>
 #> 1:       1 2025-04-19 11:00:00 2025-05-01 19:00:00 POINT (646614.8 6238102)
