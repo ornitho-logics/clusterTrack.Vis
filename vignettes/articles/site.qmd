@@ -11,7 +11,7 @@ knitr:
 ---
 
 
-Once you have exported a bunch of interactive map HTML files with `map(ctdf, path = ...)`, you can call `site()` to create a simple browsable index for that folder.
+Once you have exported a bunch of interactive map HTML files with `map(ctdf) |> save_map(path = ...)`, you can call `site()` to create a simple browsable index for that folder.
 
 `site()` copies a Quarto `index.qmd` template into the same directory as your saved map `.html` files. Render that `index.qmd` to produce an `index.html` that links to the maps.
 
