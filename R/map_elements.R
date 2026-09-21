@@ -77,7 +77,7 @@
 }
 
 .navbutton <- function(href, label) {
-  if (!isTRUE(!is.na(href) && nzchar(hrefx))) {
+  if (!isTRUE(!is.na(href) && nzchar(href))) {
     return(
       tags$span(
         class = "ct-navbutton ct-navbutton-disabled",

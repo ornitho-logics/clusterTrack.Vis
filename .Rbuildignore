@@ -14,5 +14,6 @@
 ^vignettes/.*\.html$
 ^vignettes/.*_files$
 ^\.positai$
+^\.kilo$
 ^\.claude$
 Rplots.pdf
