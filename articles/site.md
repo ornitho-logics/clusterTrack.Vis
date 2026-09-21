@@ -1,7 +1,7 @@
 # Map gallery
 
 Once you have exported a bunch of interactive map HTML files with
-`map(ctdf, path = ...)`, you can call
+`map(ctdf) |> save_map(path = ...)`, you can call
 [`site()`](https://ornitho-logics.github.io/clusterTrack.Vis/reference/site.md)
 to create a simple browsable index for that folder.
 

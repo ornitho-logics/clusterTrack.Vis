@@ -62,11 +62,38 @@
 <p><a href="https://github.com/ornitho-logics/clusterTrack.Vis/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/ornitho-logics/clusterTrack.Vis/actions/workflows/pkgdown.yaml/badge.svg?branch=main" alt="pkgdown"></a> <a href="https://github.com/ornitho-logics/clusterTrack.Vis" class="external-link"><embed src="https://img.shields.io/github/r-package/v/ornitho-logics/clusterTrack.Vis?label=version"></embed></a> <a href="https://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/license-GPL%20%3E%3D%203-blue.svg" alt="License: GPL &gt;= 3"></a> <a href="https://github.com/ornitho-logics/clusterTrack.Vis/commits/main" class="external-link"><embed src="https://img.shields.io/github/last-commit/ornitho-logics/clusterTrack.Vis"></embed></a></p>
 <p><code>clusterTrack.Vis</code> is the companion package for <a href="https://github.com/ornitho-logics/clusterTrack" class="external-link"><code>clusterTrack</code></a>.</p>
 <p>It contains visualization tools, workflows, and exploratory examples built around <code>clusterTrack</code> outputs.</p>
+<p>Create interactive maps from clustered tracks with <code><a href="reference/map.html">map()</a></code>. Each map includes:</p>
+<ul>
+<li>track lines and cluster polygons;</li>
+<li>numbered markers for cluster sites;</li>
+<li>popups with cluster and observation details; and</li>
+<li>a time slider for exploring cluster stop times.</li>
+</ul>
+<p>Save maps as HTML with <code><a href="reference/map.html">save_map()</a></code>, and create a browsable gallery of saved maps with <code><a href="reference/site.html">site()</a></code>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'ornitho-logics/clusterTrack.Vis'</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="interactive-maps">Interactive maps<a class="anchor" aria-label="anchor" href="#interactive-maps"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ornitho-logics.github.io/clusterTrack/" class="external-link">clusterTrack</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ornitho-logics.github.io/clusterTrack.Vis/">clusterTrack.Vis</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mini_ruff</span><span class="op">)</span></span>
+<span><span class="va">ctdf</span> <span class="op">=</span> <span class="fu"><a href="https://ornitho-logics.github.io/clusterTrack/reference/as_ctdf.html" class="external-link">as_ctdf</a></span><span class="op">(</span><span class="va">mini_ruff</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ornitho-logics.github.io/clusterTrack/reference/cluster_track.html" class="external-link">cluster_track</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/map.html">map</a></span><span class="op">(</span><span class="va">ctdf</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="reference/map.html">map()</a></code> returns a <code>leaflet</code> map, so it can be extended with standard <code>leaflet</code> tools before saving it. Export one or more maps to HTML with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_path</span> <span class="op">=</span> <span class="st">"path/to/maps"</span></span>
+<span><span class="fu"><a href="reference/map.html">map</a></span><span class="op">(</span><span class="va">ctdf</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/map.html">save_map</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">out_path</span><span class="op">)</span></span></code></pre></div>
+<p>For a collection of exported maps, <code><a href="reference/site.html">site()</a></code> copies a Quarto index template into the output directory. Render the resulting <code>index.qmd</code> to create an HTML gallery with thumbnails and links to the maps:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/site.html">site</a></span><span class="op">(</span><span class="va">out_path</span><span class="op">)</span></span></code></pre></div>
+<p>See the <a href="https://ornitho-logics.github.io/clusterTrack.Vis/articles/site.html">map gallery article</a> for a complete example.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
