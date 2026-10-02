@@ -26,3 +26,14 @@ test_that("save_map() writes an html file and injects navbuttons", {
 
   expect_true(grepl("ct-navbuttons", html, fixed = TRUE))
 })
+
+test_that("save_map() accepts an explicit name and creates the output directory", {
+  path = file.path(tempfile("ctvis-"), "maps")
+  x = leaflet::leaflet()
+
+  result = withVisible(save_map(x, path = path, name = "custom"))
+
+  expect_false(result$visible)
+  expect_identical(result$value, file.path(path, "custom.html"))
+  expect_true(file.exists(result$value))
+})
